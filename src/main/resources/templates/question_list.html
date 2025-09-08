@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"> 
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>질문 리스트</title>
 </head>
 <body>
 	<h2>Hello Template</h2>
@@ -15,7 +15,9 @@
 		</thead>
 		<tbody>
 			<tr th:each="question : ${questionList}">
-				<td th:text="${question.subject}">제목</td>  
+				<td>
+					<a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}">제목</a>
+				</td>  
 				<td th:text="${question.createdate}">등록일</td>
 			</tr>
 		</tbody>
