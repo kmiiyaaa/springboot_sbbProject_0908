@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.config.ConfigDataNotFoundException;
 import org.springframework.stereotype.Service;
+
+import com.kmii.kmiboard.DataNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +30,7 @@ public class QuestionService {
 		if(qOptional.isPresent()) {
 			return qOptional.get();  // question 반환
 		} else {
-			throw new DataNotFoundException("question not found");
+			throw new DataNotFoundException(null);
 		}
 		
 	}
