@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.kmii.kmiboard.entity.Answer;
-import com.kmii.kmiboard.entity.Question;
-import com.kmii.kmiboard.repository.AnswerRepository;
-import com.kmii.kmiboard.repository.QuestionRepository;
+import com.kmii.kmiboard.answer.Answer;
+import com.kmii.kmiboard.answer.AnswerRepository;
+import com.kmii.kmiboard.question.Question;
+import com.kmii.kmiboard.question.QuestionRepository;
 
 import jakarta.transaction.Transactional;
 

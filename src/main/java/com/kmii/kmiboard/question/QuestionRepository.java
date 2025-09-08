@@ -1,10 +1,8 @@
-package com.kmii.kmiboard.repository;
+package com.kmii.kmiboard.question;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.kmii.kmiboard.entity.Question;
 
 public interface QuestionRepository extends JpaRepository<Question, Integer> {
 	

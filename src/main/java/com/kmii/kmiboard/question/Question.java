@@ -1,7 +1,9 @@
-package com.kmii.kmiboard.entity;
+package com.kmii.kmiboard.question;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.kmii.kmiboard.answer.Answer;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

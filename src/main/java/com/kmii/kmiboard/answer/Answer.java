@@ -1,8 +1,10 @@
-package com.kmii.kmiboard.entity;
+package com.kmii.kmiboard.answer;
 
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
+
+import com.kmii.kmiboard.question.Question;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
