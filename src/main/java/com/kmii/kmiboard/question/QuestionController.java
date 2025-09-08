@@ -5,12 +5,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 //import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.validation.Valid;
 
 
 @RequestMapping("/question")
@@ -52,20 +55,40 @@ public class QuestionController {
 	}
 	
 	@GetMapping(value="/create")  // 게시판 리스트에서 버튼눌렀을땐 - 글작성 등록 폼만 매핑해주는 메서드( get)
-	public String questionCreate() {
+	public String questionCreate(QuestionForm questionForm) {
 		return "question_form";
 	}
 	
+	
+//validation 전 사용	
+//	@PostMapping(value="/create")  // 글 작성후 완료 버튼눌렀을때 -  질문 내용을 DB에 저장하는 메서드 - post
+//	public String questionCreate(@RequestParam(value="subject") String subject,@RequestParam(value="content") String content) {  // ()안에  인수 넣어서 이름 바꾸지 않아도 오버라이딩해서 사용가능
+//		//@RequestParam("subject") String subject -> String subject =  request.getParameter("subject")
+//		//@RequestParam("content") String content -> String content =  request.getParameter("content")
+//		
+//		//TODO: 질문을 DB에 저장하기
+//		
+//		questionService.create(subject, content);  // 질문 DB에 등록
+//		return "redirect:/question/list"; // 질문 리스트로 이동 -> 반드시 redirect
+//	}
+	
+	//validation 
 	@PostMapping(value="/create")  // 글 작성후 완료 버튼눌렀을때 -  질문 내용을 DB에 저장하는 메서드 - post
-	public String questionCreate(@RequestParam(value="subject") String subject,@RequestParam(value="content") String content) {  // ()안에  인수 넣어서 이름 바꾸지 않아도 오버라이딩해서 사용가능
+	public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult) { 
 		//@RequestParam("subject") String subject -> String subject =  request.getParameter("subject")
 		//@RequestParam("content") String content -> String content =  request.getParameter("content")
 		
-		//TODO: 질문을 DB에 저장하기
+		if(bindingResult.hasErrors()) {  // 참이면 -> 유효성 체크에서 에러 발생
+			return "question_form";  // 에러 발생시 다시 질문 등록 폼으로 이동
+		}
 		
-		questionService.create(subject, content);  // 질문 DB에 등록
+		
+		questionService.create(questionForm.getSubject(), questionForm.getContent());  // 질문 DB에 등록
+		
 		return "redirect:/question/list"; // 질문 리스트로 이동 -> 반드시 redirect
 	}
+	
+	
 	
 
 }
