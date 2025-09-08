@@ -45,7 +45,7 @@ public class Answer {
 	
 	//N:1 -> 답변들: 질문 ->@ManyToOne
 	@ManyToOne
-	private Question question;  // 질문 하나 
+	private Question question;  // 질문 하나 가져오는거라 List쓰지 않는다.
 	
 	
 
