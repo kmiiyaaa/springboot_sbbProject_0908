@@ -3,9 +3,8 @@
 		<h5 class="my-3 border-bottom pb-2">질문 등록</h5>
 		<form th:action="@{/question/create}" th:object="${questionForm}" method="post">
 			
-
-			<!-- 유효성 체크 에러표시 -->
-			<div th:replace="~{formErrors :: formErrorsFragment}"></div>
+					<!-- 유효성 체크 에러표시 부분 -->
+			<div th:replace="~{form_errors :: formErrorsFragment}"></div>
 
 			<div class="mb-3">
 				<label for="subject" class="form-label">제목</label>
