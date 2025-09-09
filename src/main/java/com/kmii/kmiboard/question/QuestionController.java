@@ -3,6 +3,7 @@ package com.kmii.kmiboard.question;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,18 +30,31 @@ public class QuestionController {
 	private QuestionService questionService;
 	
 	
-	@GetMapping(value="/") //root 요청 처리
-	public String root() {
-		return "redirect:/question/list";
-	}
+	
 
+	/* 페이징용 리스트
 	@GetMapping(value="/list")
 	// @ResponseBody  ->  return 옆에 적어준 문자열 그대로 화면에 출력
-	public String list(Model model) {
+	public String list(Model model, @RequestParam(value="page", defaultValue = "0") int page) {  //defalutValue -> 페이지 null값으로 들어왔을때 처리 가능
+		
+		// List<Question> questionList = questionRepository.findAll(); // 모든 질문글 불러오기
+		//List<Question> questionList = questionService.getList();
+		Page<Question> paging = questionService.getList(page);
+		//게시글 10개식 자른 리스트 -> 페이지당 2개
+		model.addAttribute("paging", paging);
+		
+		
+		return "question_list";
+		
+	} */
+	
+	@GetMapping(value="/list")
+	// @ResponseBody  ->  return 옆에 적어준 문자열 그대로 화면에 출력
+	public String list(Model model) {  //defalutValue -> 페이지 null값으로 들어왔을때 처리 가능
 		
 		// List<Question> questionList = questionRepository.findAll(); // 모든 질문글 불러오기
 		List<Question> questionList = questionService.getList();
-		model.addAttribute("questionList", questionList);
+		model.addAttribute("paging", questionList);
 		
 		
 		return "question_list";

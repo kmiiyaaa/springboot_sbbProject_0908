@@ -6,6 +6,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.config.ConfigDataNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.kmii.kmiboard.DataNotFoundException;
@@ -20,7 +23,10 @@ public class QuestionService {
 	private final QuestionRepository questionRepository;  
 	//@RequiredArgsConstructor 이용해서 생성자 방식으로 주입된 questionRepository - final 필드만 가능
 	
-	public List<Question> getList() {//모든 질문글 가져오기
+	public List<Question> getList() {  //모든 질문글 가져오기
+		
+		// Pageable pageable = PageRequest.of(page, 10);  // 한페이지당 10개의 게시글 표시
+		
 		return questionRepository.findAll();
 		
 	}
