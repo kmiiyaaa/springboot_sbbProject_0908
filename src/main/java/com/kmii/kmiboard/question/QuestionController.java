@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -76,6 +77,7 @@ public class QuestionController {
 		return "question_detail"; // 타임리프 html의 이름
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping(value="/create")  // 게시판 리스트에서 버튼눌렀을땐 - 글작성 등록 폼만 매핑해주는 메서드( get)
 	public String questionCreate(QuestionForm questionForm) {
 		return "question_form";
@@ -95,6 +97,7 @@ public class QuestionController {
 //	}
 	
 	//validation 
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping(value="/create")  // 글 작성후 완료 버튼눌렀을때 -  질문 내용을 DB에 저장하는 메서드 - post
 	public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal ) { 
 		

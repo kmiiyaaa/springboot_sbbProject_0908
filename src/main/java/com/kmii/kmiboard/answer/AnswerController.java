@@ -3,6 +3,7 @@ package com.kmii.kmiboard.answer;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +32,7 @@ public class AnswerController {
 	@Autowired
 	private UserService userService;
 	
+	@PreAuthorize("isAuthenticated()")  // 로그인한(인정받은) 유저만 해당 메서드 실행되게 함
 	@PostMapping(value="/create/{id}") // 답변 등록 요청 -> 넘어오는 파라미터 값 : 부모 질문글의 번호
 	public String createAnswer(Model model, @PathVariable("id") Integer id, @Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal) { //pricipal객체에 - 로그인한 사용자 명 알 수 있다
 		Question question = questionService.getQuestion(id);
