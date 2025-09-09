@@ -1,5 +1,6 @@
 package com.kmii.kmiboard.question;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kmii.kmiboard.answer.AnswerForm;
+import com.kmii.kmiboard.user.SiteUser;
+import com.kmii.kmiboard.user.UserService;
 
 import jakarta.validation.Valid;
 
@@ -28,6 +31,9 @@ public class QuestionController {
 	
 	@Autowired
 	private QuestionService questionService;
+	
+	@Autowired
+	private UserService userService;
 	
 	
 	
@@ -90,15 +96,16 @@ public class QuestionController {
 	
 	//validation 
 	@PostMapping(value="/create")  // 글 작성후 완료 버튼눌렀을때 -  질문 내용을 DB에 저장하는 메서드 - post
-	public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult) { 
+	public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal ) { 
 		
 		
 		if(bindingResult.hasErrors()) {  // 참이면 -> 유효성 체크에서 에러 발생
 			return "question_form";  // 에러 발생시 다시 질문 등록 폼으로 이동, 다 묶어서 보낸다(에러,데이터값)
 		}
 		
+		SiteUser siteUser = this.userService.getUser(principal.getName());
 		
-		questionService.create(questionForm.getSubject(), questionForm.getContent());  // 질문 DB에 등록
+		questionService.create(questionForm.getSubject(), questionForm.getContent(),siteUser);  // 질문 DB에 등록
 		
 		return "redirect:/question/list"; // 질문 리스트로 이동 -> 반드시 redirect
 	}
