@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.kmii.kmiboard.answer.Answer;
+import com.kmii.kmiboard.user.SiteUser;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,7 +12,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -50,5 +53,10 @@ public class Question {
 	@OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE) 
 	//mappedBy에 적은값은 answer에서 설정한 이름 , cascade - 질문글(부모글)이 삭제 될 경우, 답글들이 함께 삭제되게하는 설정
 	private List<Answer> answerList;
+	
+	//N:1 -> 질문들 : 작성자 -> 작성자 한명이 질문 여러개 쓸 수 있으니까 -> @ManyToOne
+	@ManyToOne
+	private SiteUser author;  // 글쓴이
+	
 	
 }

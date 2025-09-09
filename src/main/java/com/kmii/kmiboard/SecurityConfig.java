@@ -2,6 +2,8 @@ package com.kmii.kmiboard;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,6 +22,13 @@ public class SecurityConfig {
 	               .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
 //	         .csrf((csrf) -> csrf
 //	        		 .ignoringRequestMatchers(new AntPathRequestMatcher("h2-console/**")))
+	         .formLogin((formLogin) -> formLogin
+	        		 .loginPage("/user/login")  //로그인 요청
+	        		 .defaultSuccessUrl("/")) //로그인 성공시 이동할 페이지 -> 루트로 지정
+	         .logout((logout)->logout
+	        		 .logoutRequestMatcher(new AntPathRequestMatcher("user/logout"))
+	         		 .logoutSuccessUrl("/")
+	         		 .invalidateHttpSession(true))
 	         ;
 	      return http.build();
 	   }
@@ -28,5 +37,11 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+	
+	@Bean
+	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) 
+	throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
 
 }

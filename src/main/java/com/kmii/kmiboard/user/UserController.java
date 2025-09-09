@@ -23,8 +23,6 @@ public class UserController {
 	}
 	
 	@PostMapping(value="/signup")  //회원 가입 정보를 DB에 입력
-	
-	
 	public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
 		
 		if(bindingResult.hasErrors()) {
@@ -52,6 +50,11 @@ public class UserController {
 		
 		
 		return "redirect:/question/list"; //첫화면으로 이동
+	}
+	
+	@GetMapping(value="/login")
+	public String login() {
+		return"login_form";
 	}
 	
 

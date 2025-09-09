@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.kmii.kmiboard.question.Question;
+import com.kmii.kmiboard.user.SiteUser;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -49,6 +50,9 @@ public class Answer {
 	@ManyToOne
 	private Question question;  // 질문 하나 가져오는거라 List쓰지 않는다.
 	
+	//N:1 -> 답변들 : 작성자 -> 작성자 한명이 답변 여러개 쓸 수 있으니까 -> @ManyToOne
+	@ManyToOne
+	private SiteUser author;  // 글쓴이
 	
 
 }
