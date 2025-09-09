@@ -1,6 +1,7 @@
 package com.kmii.kmiboard.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,8 +37,19 @@ public class UserController {
 			return "signup_form";
 			
 		}
+		try {
+			userService.create(userCreateForm.getUsername(), userCreateForm.getEmail(), userCreateForm.getPassword1());
+		}catch(DataIntegrityViolationException e) {  // 중복된 데이터에 대한 예외처리
+			e.printStackTrace();
+			//이미 등록된 사용자 아이디의 경우 발생하는 에러 추가
+			bindingResult.reject("signupFailed", "이미 등록된  사용자 ID입니다 ");
+			return "signup_form";
+		}catch (Exception e) {  // 기타 나머지 예외처리
+			e.printStackTrace();
+			bindingResult.reject("signupFailed", "회원가입 실패");
+		}
 		
-		userService.create(userCreateForm.getUsername(), userCreateForm.getEmail(), userCreateForm.getPassword1());
+		
 		
 		return "redirect:/question/list"; //첫화면으로 이동
 	}
