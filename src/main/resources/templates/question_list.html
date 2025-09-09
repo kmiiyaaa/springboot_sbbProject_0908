@@ -9,12 +9,12 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="question, loop : ${questionList}">
-					<td th:text="${loop.count}"></td> <!-- 질문글 번호 -->
+				<tr th:each="question, loop : ${questionList}">      <!--  model에 실려온 ${qeustionList} -->
+					<td th:text="${loop.count}"></td> <!-- 질문글 번호 , loop : 임시값-->
 					<td>
 						<a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}">제목</a>
 					</td>  
-					<td th:text="${#temporals.format(question.createdate, 'yyyy-MM-DD HH:nn')}">등록일</td>
+					<td th:text="${#temporals.format(question.createdate, 'yyyy-MM-DD HH:mm')}">등록일</td>
 				</tr>
 			</tbody>
 		</table>

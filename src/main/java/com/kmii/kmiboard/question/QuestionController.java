@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kmii.kmiboard.answer.AnswerForm;
+
 import jakarta.validation.Valid;
 
 
-@RequestMapping("/question")
+@RequestMapping("/question")   // 접두사
 @Controller
 public class QuestionController {
 	
@@ -46,7 +48,7 @@ public class QuestionController {
 	}
 	
 	@GetMapping(value="/detail/{id}")  // 파라미터이름 없이 값만 넘어 왔을때 처리
-	public String detail(Model model, @PathVariable("id") Integer id) {
+	public String detail(Model model, @PathVariable("id") Integer id , AnswerForm answerForm) {
 		
 		//service에 4(질문글 번호) 넣어서 호출
 		Question question = questionService.getQuestion(id);
@@ -62,7 +64,7 @@ public class QuestionController {
 	
 //validation 전 사용	
 //	@PostMapping(value="/create")  // 글 작성후 완료 버튼눌렀을때 -  질문 내용을 DB에 저장하는 메서드 - post
-//	public String questionCreate(@RequestParam(value="subject") String subject,@RequestParam(value="content") String content) {  // ()안에  인수 넣어서 이름 바꾸지 않아도 오버라이딩해서 사용가능
+//	public String questionCreate(@RequestParam(value="subject") String subject,@RequestParam(value="content") String content) { 
 //		//@RequestParam("subject") String subject -> String subject =  request.getParameter("subject")
 //		//@RequestParam("content") String content -> String content =  request.getParameter("content")
 //		
@@ -75,11 +77,10 @@ public class QuestionController {
 	//validation 
 	@PostMapping(value="/create")  // 글 작성후 완료 버튼눌렀을때 -  질문 내용을 DB에 저장하는 메서드 - post
 	public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult) { 
-		//@RequestParam("subject") String subject -> String subject =  request.getParameter("subject")
-		//@RequestParam("content") String content -> String content =  request.getParameter("content")
+		
 		
 		if(bindingResult.hasErrors()) {  // 참이면 -> 유효성 체크에서 에러 발생
-			return "question_form";  // 에러 발생시 다시 질문 등록 폼으로 이동
+			return "question_form";  // 에러 발생시 다시 질문 등록 폼으로 이동, 다 묶어서 보낸다(에러,데이터값)
 		}
 		
 		

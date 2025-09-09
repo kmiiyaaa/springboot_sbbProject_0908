@@ -31,10 +31,11 @@ public class QuestionService {
 		if(qOptional.isPresent()) {
 			return qOptional.get();  // question 반환
 		} else {
-			throw new DataNotFoundException(null);
+			throw new DataNotFoundException(null);   //에러 페이지 출력
 		}
 		
 	}
+	
 	
 	public void create(String subject, String content) {
 		Question question = new Question();
