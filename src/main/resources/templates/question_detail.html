@@ -15,6 +15,12 @@
 						<div th:text="${#temporals.format(question.createdate, 'yyyy-MM-dd HH:mm')}">질문등록일</div>
 					</div>
 				</div>
+				<div class="my-3"><!-- 수정 버튼 -->
+	               <a th:href="@{|/question/modify/${question.id}|}" 
+	               class="btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+	               th:if="${question.author != null and question.author.username == #authentication.getPrincipal().getUsername()}"
+	               th:text="수정">수정 버튼 이름 표시</a>
+	            </div>
 			</div>
 		</div>
 		
