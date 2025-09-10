@@ -36,11 +36,10 @@ public class AnswerController {
 	@PostMapping(value="/create/{id}") // 답변 등록 요청 -> 넘어오는 파라미터 값 : 부모 질문글의 번호
 	public String createAnswer(Model model, @PathVariable("id") Integer id, @Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal) { //pricipal객체에 - 로그인한 사용자 명 알 수 있다
 		Question question = questionService.getQuestion(id);
+		
 		// principal.getName(); //로그인한 유저의 ID 얻기
-		
-		
 		SiteUser siteUser = userService.getUser(principal.getName());
-		
+		//principal.getName() = (String) session.getAttribute("sid"); - 세션에 올라가있는 로그인한 유저의 아이디 가져오기
 		
 		if(bindingResult.hasErrors()) {
 			model.addAttribute("question", question);  // question 수동으로 보내주기

@@ -14,7 +14,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration  // 스프링부트의 환경설정 파일이라는 것을 명시하는 annotation
 @EnableWebSecurity  // 모든 요청 URL이 스프링 시큐리티의 제어를 받도록 만드는 annotation 
-@EnableMethodSecurity(prePostEnabled = true)  // @PreAuthorize 사용을 위해 설정 -> 이거하면 로그인해야 메서드 실행
+@EnableMethodSecurity(prePostEnabled = true)  // 메서드에 권한 설정 - 인증받은 유저만 해당 메서드 가능하게 / @PreAuthorize 사용을 위해 설정 -> 로그인해야(인증받아야) 메서드 실행
 public class SecurityConfig {
 	
 	@Bean

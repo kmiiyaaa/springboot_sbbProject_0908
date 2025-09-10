@@ -97,7 +97,7 @@ public class QuestionController {
 //	}
 	
 	//validation 
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("isAuthenticated()")  //로그인 - 인증받지 않은 유저는 해당 메서드 호출 불가 - 자동으로 로그인페이지로 보내버린다
 	@PostMapping(value="/create")  // 글 작성후 완료 버튼눌렀을때 -  질문 내용을 DB에 저장하는 메서드 - post
 	public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal ) { 
 		
