@@ -26,6 +26,7 @@ public class SecurityConfig {
 //	         .csrf((csrf) -> csrf  //H2 DB 접속 콘솔 허가
 //	        		 .ignoringRequestMatchers(new AntPathRequestMatcher("h2-console/**")))
 	         .formLogin((formLogin) -> formLogin  // 스프링 시큐리티 로그인 설정
+	        		 .loginPage("/user/login") //로그인 요청페이지 인식->스프링 시큐리티 /user/login->로그인 요청
 	        		 .defaultSuccessUrl("/")) //로그인 성공시 이동할 페이지 -> 루트로 지정
 	         .logout((logout)->logout
 	        		 .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))  //로그아웃 설정
