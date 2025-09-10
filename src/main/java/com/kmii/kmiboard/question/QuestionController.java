@@ -1,6 +1,7 @@
 package com.kmii.kmiboard.question;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,7 +99,7 @@ public class QuestionController {
 //	}
 	
 	//validation 
-	@PreAuthorize("isAuthenticated()")  //로그인 - 인증받지 않은 유저는 해당 메서드 호출 불가 - 자동으로 로그인페이지로 보내버린다
+	@PreAuthorize("isAuthenticated()")  //로그인 - 인증받지 않은 유저는 해당 메서드 호출 불가 - 자동으로 로그인페이지로 보내버린다 //form->action으로 넘어오지 않으면 권한인증이 안됨
 	@PostMapping(value="/create")  // 글 작성후 완료 버튼눌렀을때 -  질문 내용을 DB에 저장하는 메서드 - post
 	public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal ) { 
 		
@@ -114,7 +115,7 @@ public class QuestionController {
 		return "redirect:/question/list"; // 질문 리스트로 이동 -> 반드시 redirect
 	}
 	
-	
+	@PreAuthorize("isAuthenticated()") 
 	@GetMapping(value="/modify/{id}")
 	public String questionModify(QuestionForm questionForm, @PathVariable("id") Integer id, Principal principal) {
 		
@@ -132,6 +133,34 @@ public class QuestionController {
 		
 		
 		return "question_form";
+	}
+	
+	
+	
+	@PreAuthorize("isAuthenticated()") 
+	@PostMapping(value="/modify/{id}")
+	public String questionModify(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal,
+			@PathVariable("id") Integer id) {
+		
+		if(bindingResult.hasErrors()) {
+			return "question_form";
+			
+		}
+		
+		Question question = questionService.getQuestion(id);
+		questionService.modify(question, questionForm.getSubject(), questionForm.getContent());
+		
+		//글쓴 유저와 로그인한 유저의 동일 여부를 다시한번 검증 - 수정권한 검증
+		if(!question.getAuthor().getUsername().equals(principal.getName())) {  //참이면 - 수정권한이 없음 , 에러처리
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+		}
+				
+		
+		return String.format("redirect:/question/detail/%s",id);
+		
+		
+		
+		
 	}
 	
 
