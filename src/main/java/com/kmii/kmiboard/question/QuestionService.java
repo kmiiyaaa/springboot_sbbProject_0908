@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.config.ConfigDataNotFoundException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -54,6 +55,25 @@ public class QuestionService {
 		
 	}
 	
+	
+	//페이징 테스트
+		public Page<Question> getPageQuestions(int page) {
+			int size = 10; //1페이지당 10개씩 글 출력
+			
+			int startRow = page * size;
+			int endRow = startRow + size;
+			
+			List<Question> pageQuestionList = questionRepository.findQuestionsWithPaging(startRow, endRow);
+			
+			long totalQuestion = questionRepository.count(); //모든 글 갯수 가져오기
+			
+			Page<Question> pagingList = new PageImpl<>(pageQuestionList, PageRequest.of(page, size), totalQuestion);
+			
+			return pagingList;
+			
+		}
+	
+	
 	public void modify(Question question, String subject, String content) { //질문 글 수정하기
 		question.setSubject(subject); //새로운 제목으로 저장
 		question.setContent(content); //새로운 내용으로 저장
@@ -79,5 +99,9 @@ public class QuestionService {
 		question.setHit(question.getHit() + 1);		
 		questionRepository.save(question);
 	}
+	
+	
+	
+	
 
 }

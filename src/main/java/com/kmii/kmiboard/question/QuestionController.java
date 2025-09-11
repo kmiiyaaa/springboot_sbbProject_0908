@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 //import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.kmii.kmiboard.answer.AnswerForm;
@@ -57,6 +60,25 @@ public class QuestionController {
 		
 	} */
 	
+	
+	//페이징 테스트
+	public Page<Question> getPageQuestion(int page){
+		
+		int size = 10; // 1페이지당 10개씩 글 출력
+		
+		int startRow = page * size;  // 첫페이지 page=0 => 0*10=0 , 두번째 페이지 page=1 -> 10
+		int endRow = startRow * size; //0+10-10, 두번째 페이지 10+10 = 20
+		
+		List<Question> pageQuestionList = questionRepository.findQuestionsWithPaging(startRow, endRow);
+		
+		long totalQuestion = questionRepository.count();  // 모든 글 갯수 가져오기
+		
+		Page<Question> pagingList = new PageImpl<>(pageQuestionList, PageRequest.of(page, size), totalQuestion);
+	
+		return pagingList;
+	}
+	
+	
 	@GetMapping(value="/list")
 	// @ResponseBody  ->  return 옆에 적어준 문자열 그대로 화면에 출력
 	public String list(Model model) {  //defalutValue -> 페이지 null값으로 들어왔을때 처리 가능
@@ -64,6 +86,25 @@ public class QuestionController {
 		// List<Question> questionList = questionRepository.findAll(); // 모든 질문글 불러오기
 		List<Question> questionList = questionService.getList();
 		model.addAttribute("paging", questionList);
+		
+		
+		return "question_list";
+		
+	}
+	
+	@GetMapping(value="/list2")
+	// @ResponseBody  ->  return 옆에 적어준 문자열 그대로 화면에 출력
+	public String list(Model model, @RequestParam(value="page", defaultValue ="0") int page) {  //defalutValue -> 페이지 null값으로 들어왔을때 처리 가능
+		
+		int pageSize = 10;
+		
+		// List<Question> questionList = questionRepository.findAll(); // 모든 질문글 불러오기
+		// List<Question> questionList = questionService.getList();
+		
+		Page<Question> paging = questionService.getPageQuestions(page);
+		//게시글 10개씩 자른 리스트 -> 페이지당 10개 -> 2페이지에 해당하는 글 10개 
+		
+		model.addAttribute("paging", paging);
 		
 		
 		return "question_list";

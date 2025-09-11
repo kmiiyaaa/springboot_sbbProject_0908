@@ -53,7 +53,7 @@ public class AnswerController {
 		Answer answer =  answerService.create(question, answerForm.getContent(),siteUser);  //DB에 답변 등록
 		
 	
-		return String.format("redirect:/question/detail/%s#answer_%s", id, answer.getId() );  // 뒤 %s - 내가 단 답글의 번호
+		return String.format("redirect:/question/detail/%s#answer_%s", answer.getQuestion().getId(), answer.getId() );  // 뒤 %s - 내가 단 답글의 번호
 		
 	}
 	
@@ -116,7 +116,7 @@ public class AnswerController {
 		
 		answerService.vote(answer, siteUser);
 		
-		return String.format("redirect:/question/detail/%s", answer.getQuestion().getId());
+		return String.format("redirect:/question/detail/%s#answer_%s", answer.getQuestion().getId(), answer.getId());
 		//해당 답변이 달린 원글(질문글)로 이동
 	}
 	
