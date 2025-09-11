@@ -78,21 +78,21 @@ public class QuestionController {
 		return pagingList;
 	}
 	
+// 페이징 넣기전 list	
+//	@GetMapping(value="/list")
+//	// @ResponseBody  ->  return 옆에 적어준 문자열 그대로 화면에 출력
+//	public String list(Model model) {  //defalutValue -> 페이지 null값으로 들어왔을때 처리 가능
+//		
+//		// List<Question> questionList = questionRepository.findAll(); // 모든 질문글 불러오기
+//		List<Question> questionList = questionService.getList();
+//		model.addAttribute("paging", questionList);
+//		
+//		
+//		return "question_list";
+//		
+//	}
 	
 	@GetMapping(value="/list")
-	// @ResponseBody  ->  return 옆에 적어준 문자열 그대로 화면에 출력
-	public String list(Model model) {  //defalutValue -> 페이지 null값으로 들어왔을때 처리 가능
-		
-		// List<Question> questionList = questionRepository.findAll(); // 모든 질문글 불러오기
-		List<Question> questionList = questionService.getList();
-		model.addAttribute("paging", questionList);
-		
-		
-		return "question_list";
-		
-	}
-	
-	@GetMapping(value="/list2")
 	// @ResponseBody  ->  return 옆에 적어준 문자열 그대로 화면에 출력
 	public String list(Model model, @RequestParam(value="page", defaultValue ="0") int page) {  //defalutValue -> 페이지 null값으로 들어왔을때 처리 가능
 		
