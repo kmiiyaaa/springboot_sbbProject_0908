@@ -13,10 +13,12 @@
 		</thead>
 		<tbody>
 			<tr class="text-center" th:each="question, loop : ${paging}">
-				<td th:text="${loop.count}"></td><!-- 질문 글 번호 , loop : 임시값-->
+				<td th:text="${paging.getTotalElements - (paging.number*paging.size)- (loop.index)}"></td><!-- 질문 글 번호 , loop : 임시값-->  <!-- paging.number-1 대신 .index 써주는게 더 깔끔 -->
 				<td class="text-start"><!-- 제목줄(왼쪽 정렬) -->
 					<a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}">제목</a>
-					<span th:text="${#lists.size(question.answerList)}"></span><!-- 답변 글들의 수 -->
+					<span class="text-danger small ms-2" 
+						th:if="${#lists.size(question.answerList)>0}" 
+						th:text="${#lists.size(question.answerList)}"></span><!-- 답변 글들의 수 -->
 				</td>
 				<td>
 					<span th:if="${question.author != null}" th:text="${question.author.username}"></span>				
@@ -30,7 +32,7 @@
 	<div th:if="${!paging.isEmpty()}">  <!-- 페이징 객체 내에 글이 존재하면 참 -->
 		<ul class="pagination justify-content-center">
 			<li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">  <!-- 이전 페이지 가 없다면 disabled -->
-				<a class="page-link" th:href="@{|?page=${paging.number-1}|}">
+				<a class="page-link" th:href="@{|?page=${paging.number-1}|}"> 
 					<span>이전</span>
 				</a>
 			</li>
