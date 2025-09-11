@@ -96,7 +96,7 @@
 						th:text="삭제">삭제 버튼 이름 표시</a>
 				</div>	
 			</div>			
-		</div>
+		</div> <!-- 답변 출력 반복 끝! -->
 		
 		<!-- 답변 등록 -->
 		<form th:action="@{|/answer/create/${question.id}|}" th:object="${answerForm}" method="post" class="my-3">
@@ -130,4 +130,7 @@
 			});
 		});	
 	</script>
+	
+	
+	
 </html>

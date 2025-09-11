@@ -1,16 +1,16 @@
 <html layout:decorate="~{layout}">
 		<div layout:fragment="content" class="container my-3">
-		<div calss="row my-3">
+		<div class="row my-3">
 		<div class="col-6">
 		<a th:href="@{/question/create}" class="btn btn-primary">질문 등록하기</a>
 		</div>
 		<div class="col-6">
 			<div class="input-group">
 				<form th:action="@{/question/list}">
-					<input type="text" name="kw" id="search_kw" class="form-controle" th:vlaue="${kw}">
-					<button class="btn btn-outline-secaondary" type="button" id="btn_search"></button>
+					<input type="text" name="kw" id="search_kw" class="form-controle" th:value="${kw}">
+					<button class="btn btn-outline-secondary" type="button" id="btn_search">찾기</button>
 				</form>
-			</div>
+			</div>	
 		</div>
 	</div>
 	<table class="table">
@@ -75,6 +75,7 @@
 	</div>
 	<!-- 자바스크립트 작성 -->
 	<script layout:fragment="script" type="text/javascript">
+		//페이지 번호 전송 시 -> kw(검색어)도 같이 전송하기 위한 자바 스크립드 
 		const page_elements = document.getElementsByClassName("page-link");
 		Array.from(page_elements).forEach(function (element) {
 			element.addEventListener('click', function () {
@@ -82,5 +83,14 @@
 				document.getElementById('searchForm').submit();
 			});
 		});	
+		
+		// 검색어와 페이지 번호를 같이 전송하기 위한 자바 스크립트
+		const btn_search = document.getElementByClassName("btn-search");  
+			btn_search.addEventListener('click', function () {
+				document.getElementById('kw').value = document.getElementById('search_kw').value;
+				document.getElementById('page').value=0;
+		});
+		
+		
 	</script>
 </html>
