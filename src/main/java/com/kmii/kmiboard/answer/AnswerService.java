@@ -16,13 +16,15 @@ public class AnswerService {
 		@Autowired
 		private AnswerRepository answerRepository;
 		
-		public void create(Question question ,String content, SiteUser author) { 
+		public Answer create(Question question ,String content, SiteUser author) { 
 			Answer answer = new Answer();
 			answer.setContent(content);
 			answer.setCreatedate(LocalDateTime.now()); //  현재 시간 등록
 			answer.setQuestion(question);
 			answer.setAuthor(author);
 			answerRepository.save(answer); 
+			
+			return answer; 
 			
 			
 		}

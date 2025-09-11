@@ -50,12 +50,13 @@ public class AnswerController {
 		}
 		
 		
-		answerService.create(question, answerForm.getContent(),siteUser);  //DB에 답변 등록
+		Answer answer =  answerService.create(question, answerForm.getContent(),siteUser);  //DB에 답변 등록
 		
+	
+		return String.format("redirect:/question/detail/%s#answer_%s", id, answer.getId() );  // 뒤 %s - 내가 단 답글의 번호
 		
-		//TODO : 답변을 저장한다
-		return String.format("redirect:/question/detail/%s", id);
 	}
+	
 	
 	@PreAuthorize("isAuthenticated()") //로그인한(인증 받은) 유저만 해당 메서드가 실행되게 함
 	@GetMapping(value = "/modify/{id}") //답변을 수정할 수 있는 form으로 이동하는 요청

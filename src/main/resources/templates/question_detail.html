@@ -53,6 +53,7 @@
 		
 		<!-- 질문에 달린 답변들(반복) -->
 		<div class="card my-3" th:each="answer : ${question.answerList}">
+			<a th:id="|answer_&{answer.id}|"></a>
 			<div class="card-body">
 				<div class="card-text" style="white-space: pre-line;"
 				th:text="${answer.content}">답변글 내용</div>
@@ -75,7 +76,7 @@
 				</div>
 			
 				<div class="my-3">
-							<!-- 답변 추천 버튼(badge 버튼) -->
+						<!-- 답변 추천 버튼(badge 버튼) -->
 						<a href="javascript:void(0);" 
 						th:data-uri="@{|/answer/vote/${answer.id}|}" 
 						class="recommend btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()">
