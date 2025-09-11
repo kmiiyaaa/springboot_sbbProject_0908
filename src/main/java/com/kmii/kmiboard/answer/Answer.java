@@ -1,6 +1,7 @@
 package com.kmii.kmiboard.answer;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import org.springframework.data.annotation.CreatedDate;
 
@@ -12,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -54,7 +56,11 @@ public class Answer {
 	@ManyToOne
 	private SiteUser author;  // 글쓴이
 	
-	private LocalDateTime modifydate;
+	private LocalDateTime modifydate;// 답변글 수정 일시
+	
+	//N:N 관계->답변:추천자
+		@ManyToMany
+		Set<SiteUser> voter;
 	
 
 }

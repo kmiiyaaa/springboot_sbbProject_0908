@@ -73,6 +73,9 @@ public class QuestionController {
 	@GetMapping(value="/detail/{id}")  // 파라미터이름 없이 값만 넘어 왔을때 처리
 	public String detail(Model model, @PathVariable("id") Integer id , AnswerForm answerForm) {
 		
+		questionService.hit(questionService.getQuestion(id)); //조회수 증가
+		
+		
 		//service에 4(질문글 번호) 넣어서 호출
 		Question question = questionService.getQuestion(id);
 		model.addAttribute("question", question);
@@ -137,30 +140,55 @@ public class QuestionController {
 	
 	
 	
-	@PreAuthorize("isAuthenticated()") 
-	@PostMapping(value="/modify/{id}")
-	public String questionModify(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal,
-			@PathVariable("id") Integer id) {
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping(value = "/modify/{id}")
+	public String questionModify(@Valid QuestionForm questionForm, BindingResult bindingResult, 
+			Principal principal, @PathVariable("id") Integer id) {
 		
 		if(bindingResult.hasErrors()) {
 			return "question_form";
-			
 		}
 		
 		Question question = questionService.getQuestion(id);
+		
+		//글쓴 유저와 로그인한 유저의 동일 여부를 다시한번 검증->수정 권한 검증
+		if(!question.getAuthor().getUsername().equals(principal.getName())) { //참->수정 권한 없음
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
+		}
+		
 		questionService.modify(question, questionForm.getSubject(), questionForm.getContent());
 		
-		//글쓴 유저와 로그인한 유저의 동일 여부를 다시한번 검증 - 수정권한 검증
-		if(!question.getAuthor().getUsername().equals(principal.getName())) {  //참이면 - 수정권한이 없음 , 에러처리
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
-		}
-				
-		
 		return String.format("redirect:/question/detail/%s",id);
+	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping(value = "/delete/{id}")
+	public String questionDelete(@PathVariable("id") Integer id, Principal principal) {
 		
+		Question question = questionService.getQuestion(id);
 		
+		//글쓴 유저와 로그인한 유저의 동일 여부를 다시한번 검증->수정 권한 검증
+		if(!question.getAuthor().getUsername().equals(principal.getName())) { //참->수정 권한 없음
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
+		}
 		
+		questionService.delete(question); //글 삭제
 		
+		return "redirect:/question/list";
+	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping(value = "/vote/{id}")
+	public String questionVote(@PathVariable("id") Integer id, Principal principal) {
+		
+		Question question = questionService.getQuestion(id); //유저가 추천한 질문글의 엔티티 조회
+		
+		SiteUser siteUser = userService.getUser(principal.getName());
+		//로그인한 유저의 아이디로 유저 엔티티 조회하기
+		
+		questionService.vote(question, siteUser);
+		
+		return String.format("redirect:/question/detail/%s", id);
 	}
 	
 

@@ -21,5 +21,11 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
 	//페이징 관련
 	//TODO: public Page<Question> findAll(Pageable pageable);
 	
+//	@Query(
+//	value = "UPDATE question SET hit = hit + 1 WHERE id = :id"
+//	, nativeQuery = true)
+//@Query("UPDATE question q SET q.hit = q.hit + 1 WHERE q.id = :id")
+//public void updateHit(@Param("id") Integer id); //질문글의 기본키 번호로 조회수 증가
+	
 	
 }
