@@ -94,17 +94,19 @@ public class QuestionController {
 	
 	@GetMapping(value="/list")
 	// @ResponseBody  ->  return 옆에 적어준 문자열 그대로 화면에 출력
-	public String list(Model model, @RequestParam(value="page", defaultValue ="0") int page) {  //defalutValue -> 페이지 null값으로 들어왔을때 처리 가능
+	public String list(Model model, @RequestParam(value="page", defaultValue ="0") int page,
+			@RequestParam(value="kw", defaultValue = "") String kw) {  //defalutValue -> 페이지 null값으로 들어왔을때 처리 가능
 		
 		int pageSize = 10;
 		
 		// List<Question> questionList = questionRepository.findAll(); // 모든 질문글 불러오기
 		// List<Question> questionList = questionService.getList();
 		
-		Page<Question> paging = questionService.getPageQuestions(page);
+		Page<Question> paging = questionService.getPageQuestions(page,kw);
 		//게시글 10개씩 자른 리스트 -> 페이지당 10개 -> 2페이지에 해당하는 글 10개 
 		
 		model.addAttribute("paging", paging);
+		model.addAttribute("kw",kw);
 		
 		
 		return "question_list";
