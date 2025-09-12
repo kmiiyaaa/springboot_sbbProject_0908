@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
 	
-	@GetMapping(value="/kmii") // cloud용 root 요청 처리
+	@GetMapping(value="/") // cloud용 root 요청 처리
 	//@GetMapping(value="/") //local용 root 요청 처리
 	public String root() {
 		return "redirect:/question/list";
